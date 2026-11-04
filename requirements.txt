@@ -4,4 +4,3 @@ openosint
 sherlock-project
 holehe
 python-dotenv
-flask
