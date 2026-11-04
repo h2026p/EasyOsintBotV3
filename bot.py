@@ -5,13 +5,11 @@ import subprocess
 import json
 import re
 import ipaddress
-import threading
-from flask import Flask
 from openai import OpenAI
 from dotenv import load_dotenv
 
 # ================= НАСТРОЙКИ =================
-load_dotenv()  # Загружает переменные из .env (локально) или из окружения (на Render)
+load_dotenv()  # Загружает переменные из .env (локально) или из окружения Render
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
@@ -246,23 +244,7 @@ def handle_osint_request(message):
 
     bot.reply_to(message, final_answer[:4000])
 
-# ================= ВЕБ-СЕРВЕР ДЛЯ RENDER =================
-app = Flask(__name__)
-
-@app.route('/')
-def home():
-    return "Bot is alive!"
-
-def run_flask():
-    # Render передает порт в переменной PORT
-    port = int(os.environ.get("PORT", 10000))
-    app.run(host='0.0.0.0', port=port)
-
 # ================= ЗАПУСК =================
 if __name__ == "__main__":
-    # Запускаем Flask в фоновом потоке, чтобы Render видел открытый порт
-    threading.Thread(target=run_flask, daemon=True).start()
-    
     print("Бот запущен...")
-    # Запускаем самого бота
     bot.infinity_polling(timeout=60)
