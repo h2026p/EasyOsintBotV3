@@ -1,0 +1,7 @@
+pyTelegramBotAPI
+openai
+openosint
+sherlock-project
+holehe
+python-dotenv
+flask
